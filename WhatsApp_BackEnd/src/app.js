@@ -8,6 +8,7 @@ import compression from "compression";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import createHttpError from "http-errors";
+import routes from "./routes/index.js";
 
 dotenv.config();
 const app = express();
@@ -33,9 +34,7 @@ app.use(
   })
 );
 
-app.post("/test", (req, res) => {
-  throw createHttpError.BadRequest("this route has an error");
-});
+app.use("/api/v1", routes);
 
 //error handling
 app.use(async (req, res, next) => {
