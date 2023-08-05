@@ -1,20 +1,16 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Home, Login, Register } from "./pages";
 
-function App() {
-  const [isDark, setIsDark] = useState(false);
+export default function App() {
   return (
-    <div className={isDark ? "dark" : "App"}>
-      <h1 className="customh1 dark:bg-dark_bg_1">
-        <p className="text-black dark:text-white">Welcome to frontend</p>
-      </h1>
-      <button
-        className="bg-blue-300 p-3 rounded-md"
-        onClick={() => setIsDark((prev) => !prev)}
-      >
-        Switch For {isDark ? "LIGHT" : "DARK"}
-      </button>
+    <div className="dark">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
-
-export default App;
