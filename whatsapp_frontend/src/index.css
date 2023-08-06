@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .customh1 {
+    @apply bg-red-50 text-red-950;
+  }
+}
