@@ -90,7 +90,10 @@ export const login = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
   try {
-    res.send("LOGOUT");
+    res.clearCookie("refreshtoken", { path: "/api/v1/auth/refreshtoken" });
+    res.json({
+      message: "logged out !",
+    });
   } catch (error) {
     next(error);
   }
