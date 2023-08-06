@@ -3,8 +3,6 @@ import { createUser, signUser } from "../services/auth.service.js";
 import { generateToken, verifyToken } from "../services/token.service.js";
 import { findUser } from "../services/user.service.js";
 
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
-
 export const register = async (req, res, next) => {
   try {
     const { name, email, picture, status, password } = req.body;
@@ -118,7 +116,6 @@ export const refreshToken = async (req, res, next) => {
       "1d",
       process.env.ACCESS_TOKEN_SECRET
     );
-
     res.json({
       user: {
         _id: user._id,
