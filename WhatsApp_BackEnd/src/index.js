@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import app from "./app.js";
-import logger from "./configs/logger.config..js";
+import logger from "./configs/logger.config.js";
 
 const PORT = process.env.PORT || 8000;
 const { DATABASE_URL } = process.env;

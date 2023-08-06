@@ -1,4 +1,7 @@
 import { createUser } from "../services/auth.service.js";
+import { generateToken } from "../services/token.service.js";
+
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
 export const register = async (req, res, next) => {
   try {
@@ -11,6 +14,25 @@ export const register = async (req, res, next) => {
       password,
     });
 
+    const access_token = await generateToken(
+      { userId: newUser._id },
+      "1d",
+      process.env.ACCESS_TOKEN_SECRET
+    );
+    const refresh_token = await generateToken(
+      { userId: newUser._id },
+      "30d",
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    res.cookie("refreshtoken", refresh_token, {
+      httpOnly: true,
+      path: "/api/v1/auth/refreshtoken",
+      maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+    });
+
+    console.table({ access_token, refresh_token });
+
     res.json({
       message: "register success.",
       user: {
@@ -19,6 +41,7 @@ export const register = async (req, res, next) => {
         email: newUser.email,
         picture: newUser.picture,
         status: newUser.status,
+        token: access_token,
       },
     });
   } catch (error) {
