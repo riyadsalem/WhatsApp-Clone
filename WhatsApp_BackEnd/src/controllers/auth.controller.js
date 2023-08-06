@@ -1,5 +1,7 @@
+import createHttpError from "http-errors";
 import { createUser, signUser } from "../services/auth.service.js";
-import { generateToken } from "../services/token.service.js";
+import { generateToken, verifyToken } from "../services/token.service.js";
+import UserModel from "../models/userModel.js";
 
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
@@ -101,7 +103,6 @@ export const logout = async (req, res, next) => {
 
 export const refreshToken = async (req, res, next) => {
   try {
-    res.send("REFRESHTOKEN");
   } catch (error) {
     next(error);
   }
