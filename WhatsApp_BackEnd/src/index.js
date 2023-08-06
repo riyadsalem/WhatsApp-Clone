@@ -8,8 +8,6 @@ const { DATABASE_URL } = process.env;
 let server;
 server = app.listen(PORT, () => {
   logger.info(`SERVER IS LISTENING AT ${PORT}....`);
-  // throw new Error("ERROR IS SERVER");
-  // console.log("process id", process.pid);
 });
 
 //exit on mongoDB error
