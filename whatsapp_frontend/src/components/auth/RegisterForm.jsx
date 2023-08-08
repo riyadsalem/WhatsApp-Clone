@@ -6,16 +6,12 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signUpSchema),
   });
 
   const onSubmit = (data) => console.log(data);
-  console.log("values", watch());
-  console.log("errors", errors);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
