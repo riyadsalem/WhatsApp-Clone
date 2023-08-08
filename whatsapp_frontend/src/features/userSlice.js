@@ -29,8 +29,11 @@ export const userSlice = createSlice({
         token: "",
       };
     },
+    changeStatus: (state, action) => {
+      state.status = action.payload;
+    },
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, changeStatus } = userSlice.actions;
 export default userSlice.reducer;

@@ -3,8 +3,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../../utils/validation";
 import AuthInput from "./AuthInput";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeStatus } from "../../features/userSlice";
+import PulseLoader from "react-spinners/PulseLoader";
 
 export default function RegisterForm() {
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.user);
+
   const {
     register,
     handleSubmit,
@@ -13,7 +19,10 @@ export default function RegisterForm() {
     resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    dispatch(changeStatus("loading"));
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
@@ -60,8 +69,13 @@ export default function RegisterForm() {
             className="w-full flex justify-center bg-green_1 text-gray-100 p-4 rounded-full tracking-wide font-semibold focus:outline-none hover:bg-green_2 shadow-lg cursor-pointer transition ease-in duration-300"
             type="submit"
           >
-            Sign up
+            {status === "loading" ? (
+              <PulseLoader color="#fff" size={16} />
+            ) : (
+              "Sign up"
+            )}
           </button>
+
           {/* Sign in link */}
           <p className="flex flex-col items-center justify-center mt-10 text-center text-md dark:text-dark_text_1">
             <span>have an account ?</span>
