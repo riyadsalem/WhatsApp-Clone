@@ -2,14 +2,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../../utils/validation";
 import AuthInput from "./AuthInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStatus } from "../../features/userSlice";
+import { changeStatus, registerUser } from "../../features/userSlice";
 import PulseLoader from "react-spinners/PulseLoader";
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { status, error } = useSelector((state) => state.user);
 
   const {
     register,
@@ -19,9 +20,12 @@ export default function RegisterForm() {
     resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     dispatch(changeStatus("loading"));
-    console.log(data);
+    let res = await dispatch(registerUser({ ...data, picture: "" }));
+    if (res?.payload?.user) {
+      navigate("/");
+    }
   };
 
   return (
@@ -63,6 +67,13 @@ export default function RegisterForm() {
             register={register}
             error={errors?.password?.message}
           />
+
+          {/*if we have an error*/}
+          {error ? (
+            <div>
+              <p className="text-red-400">{error}</p>
+            </div>
+          ) : null}
 
           {/*Submit button*/}
           <button
