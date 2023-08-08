@@ -1,4 +1,22 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signUpSchema } from "../../utils/validation";
+
 export default function RegisterForm() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signUpSchema),
+  });
+
+  const onSubmit = (data) => console.log(data);
+  console.log("values", watch());
+  console.log("errors", errors);
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Container */}
@@ -8,6 +26,11 @@ export default function RegisterForm() {
           <h2 className="mt-6 text-3xl font-bold">Welcome</h2>
           <p className="mt-2 text-sm">Sign up</p>
         </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
+          <input type="text" {...register("name")} />
+          <button type="submit">submit</button>
+        </form>
       </div>
     </div>
   );
