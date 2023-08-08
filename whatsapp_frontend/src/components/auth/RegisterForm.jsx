@@ -6,11 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus, registerUser } from "../../features/userSlice";
 import PulseLoader from "react-spinners/PulseLoader";
+import Picture from "./Picture";
+import { useState } from "react";
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status, error } = useSelector((state) => state.user);
+  const [picture, setPicture] = useState();
+  const [readablePicture, setReadablePicture] = useState("");
 
   const {
     register,
@@ -66,6 +70,12 @@ export default function RegisterForm() {
             placeholder="Password"
             register={register}
             error={errors?.password?.message}
+          />
+          {/* Picture */}
+          <Picture
+            readablePicture={readablePicture}
+            setReadablePicture={setReadablePicture}
+            setPicture={setPicture}
           />
 
           {/*if we have an error*/}
