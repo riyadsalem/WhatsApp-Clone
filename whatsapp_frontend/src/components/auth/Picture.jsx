@@ -37,6 +37,7 @@ export default function Picture({
     setPicture("");
     setReadablePicture("");
   };
+
   return (
     <div className="mt-8 content-center dark:text-dark_text_1 space-y-1">
       <label htmlFor="picture" className="text-sm font-bold tracking-wide">

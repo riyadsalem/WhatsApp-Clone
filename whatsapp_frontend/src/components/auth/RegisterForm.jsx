@@ -8,6 +8,10 @@ import { changeStatus, registerUser } from "../../features/userSlice";
 import PulseLoader from "react-spinners/PulseLoader";
 import Picture from "./Picture";
 import { useState } from "react";
+import axios from "axios";
+
+const cloud_name = process.env.REACT_APP_CLOUD_NAME;
+const cloud_secret = process.env.REACT_APP_CLOUD_SECRET;
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
@@ -26,10 +30,33 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     dispatch(changeStatus("loading"));
-    let res = await dispatch(registerUser({ ...data, picture: "" }));
-    if (res?.payload?.user) {
-      navigate("/");
+    if (picture) {
+      //upload to cloudinary and then register user
+      await uploadImage().then(async (response) => {
+        let res = await dispatch(
+          registerUser({ ...data, picture: response.secure_url })
+        );
+        if (res?.payload?.user) {
+          navigate("/");
+        }
+      });
+    } else {
+      let res = await dispatch(registerUser({ ...data, picture: "" }));
+      if (res?.payload?.user) {
+        navigate("/");
+      }
     }
+  };
+
+  const uploadImage = async () => {
+    let formData = new FormData();
+    formData.append("upload_preset", cloud_secret);
+    formData.append("file", picture);
+    const { data } = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+      formData
+    );
+    return data;
   };
 
   return (
