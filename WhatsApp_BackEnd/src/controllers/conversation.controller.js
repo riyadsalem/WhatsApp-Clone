@@ -3,6 +3,7 @@ import logger from "../configs/logger.config.js";
 import {
   doesConversationExist,
   createConversation,
+  populateConversation,
 } from "../services/conversation.service.js";
 
 export const create_open_conversation = async (req, res, next) => {
@@ -35,7 +36,16 @@ export const create_open_conversation = async (req, res, next) => {
           isGroup: false,
           users: [sender_id, receiver_id],
         };
+
         const newConvo = await createConversation(convoData);
+
+        const populatedConvo = await populateConversation(
+          newConvo._id,
+          "users",
+          "-password"
+        );
+
+        res.status(200).json(populatedConvo);
       }
     } else {
     }
