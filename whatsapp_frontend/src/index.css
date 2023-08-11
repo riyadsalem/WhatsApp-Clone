@@ -2,7 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 @layer components {
-  .customh1 {
-    @apply bg-red-50 text-red-950;
+  .container {
+    width: calc(100% - 38px);
+    max-width: 1600px;
+  }
+
+  .flex0030 {
+    flex: 0 0 30%;
+  }
+
+  .btn {
+    @apply w-[40px] h-[40px] rounded-full flex items-center justify-center active:bg-dark_hover_1;
+  }
+
+  .btn_secondary {
+    @apply w-[45px] h-[45px] rounded-full flex items-center justify-center bg-dark_bg_2;
+  }
+
+  .p16 {
+    @apply px-[16px];
   }
 }
