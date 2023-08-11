@@ -1,5 +1,6 @@
 import logger from "../configs/logger.config.js";
-import { createMessage } from "../services/message.service.js";
+import { createMessage, populateMessage } from "../services/message.service.js";
+import { updateLatestMessage } from "../services/conversation.service.js";
 
 export const sendMessage = async (req, res, next) => {
   try {
@@ -19,8 +20,10 @@ export const sendMessage = async (req, res, next) => {
     };
 
     let newMessage = await createMessage(msgData);
+    let populatedMessage = await populateMessage(newMessage._id);
 
-    res.send(newMessage);
+    await updateLatestMessage(convo_id, newMessage);
+    res.json(populatedMessage);
   } catch (error) {
     next(error);
   }
