@@ -7,7 +7,7 @@ export default function Conversations() {
     <div className="convos scrollbar">
       <ul>
         {conversations &&
-          conversations.map((convo, i) => {
+          conversations.map((convo) => {
             return <Conversation key={convo._id} convo={convo} />;
           })}
       </ul>
