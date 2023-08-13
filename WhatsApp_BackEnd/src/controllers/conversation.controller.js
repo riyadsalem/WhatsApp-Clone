@@ -6,6 +6,7 @@ import {
   populateConversation,
   getUserConversations,
 } from "../services/conversation.service.js";
+import UserModel from "../models/userModel.js";
 
 export const create_open_conversation = async (req, res, next) => {
   try {
@@ -31,9 +32,10 @@ export const create_open_conversation = async (req, res, next) => {
       if (existed_conversation) {
         res.json(existed_conversation);
       } else {
+        let receiver_user = await UserModel.findById(receiver_id);
         let convoData = {
           name: "conversation name",
-          picture: "conversation picture",
+          picture: receiver_user.picture,
           isGroup: false,
           users: [sender_id, receiver_id],
         };
