@@ -1,3 +1,5 @@
+import dateHandler from "../../../utils/date";
+
 export default function Conversation({ convo }) {
   return (
     <li className="list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px]">
@@ -9,7 +11,7 @@ export default function Conversation({ convo }) {
           <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
             <img
               src={convo.picture}
-              alt="picture"
+              alt={convo?.alt ? "picture" : "picture"}
               className="w-full h-full object-cover "
             />
           </div>
@@ -29,7 +31,17 @@ export default function Conversation({ convo }) {
             </div>
           </div>
         </div>
+        {/* Right */}
+        <div className="flex flex-col gap-y-4 items-end text-xs">
+          <span className="dark:text-dark_text_2">
+            {convo.latestMessage?.createdAt
+              ? dateHandler(convo.latestMessage?.createdAt)
+              : ""}
+          </span>
+        </div>
       </div>
+      {/*Border*/}
+      <div className="ml-16 border-b dark:border-b-dark_border_1"></div>
     </li>
   );
 }
