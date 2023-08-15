@@ -2,14 +2,14 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  // Navigate,
+  Navigate,
 } from "react-router-dom";
 import { Home, Login, Register } from "./pages";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function App() {
-  // const { user } = useSelector((state) => state.user);
-  // const { token } = user;
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
 
   return (
     <div className="dark">
@@ -18,20 +18,17 @@ export default function App() {
           <Route
             exact
             path="/"
-            // element={token ? <Home /> : <Navigate to="/login" />}
-            element={<Home />}
+            element={token ? <Home /> : <Navigate to="/login" />}
           />
           <Route
             exact
             path="/login"
-            // element={!token ? <Login /> : <Navigate to="/" />}
-            element={<Login />}
+            element={!token ? <Login /> : <Navigate to="/" />}
           />
           <Route
             exact
             path="/register"
-            // element={!token ? <Register /> : <Navigate to="/" />}
-            element={<Register />}
+            element={!token ? <Register /> : <Navigate to="/" />}
           />
         </Routes>
       </Router>
