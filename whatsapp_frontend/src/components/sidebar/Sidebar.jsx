@@ -6,7 +6,6 @@ import { useState } from "react";
 
 export default function Sidebar() {
   const [searchResults, setSearchResults] = useState([]);
-
   return (
     <div className="flex0030 max-w-[30%] h-full select-none">
       {/*Sidebar Header*/}
