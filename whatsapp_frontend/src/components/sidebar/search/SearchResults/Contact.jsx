@@ -4,7 +4,6 @@ export default function Contact({ contact }) {
       {/*Container*/}
       <div className="flex items-center gap-x-3 py-[10px]">
         {/*Contact infos*/}
-
         <div className="flex items-center gap-x-3">
           {/*Conversation user picture*/}
           <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
