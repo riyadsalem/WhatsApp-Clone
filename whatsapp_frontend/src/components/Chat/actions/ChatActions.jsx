@@ -6,6 +6,8 @@ import { sendMessage } from "../../../features/chatSlice";
 import { ClipLoader } from "react-spinners";
 
 export default function ChatActions() {
+  const [showPicker, setShowPicker] = useState(false);
+
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
@@ -35,7 +37,10 @@ export default function ChatActions() {
       <div className="w-full flex items-center gap-x-2">
         {/*Emojis and attachpments*/}
         <ul className="flex gap-x-2">
-          <EmojiPickerApp />
+          <EmojiPickerApp
+            showPicker={showPicker}
+            setShowPicker={setShowPicker}
+          />
           <Attachments />
         </ul>
         {/* Input */}
