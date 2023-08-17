@@ -115,6 +115,7 @@ export const chatSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
+
       .addCase(open_create_conversation.pending, (state, action) => {
         state.status = "loading";
       })
@@ -127,6 +128,7 @@ export const chatSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
+
       .addCase(getConversationMessages.pending, (state, action) => {
         state.status = "loading";
       })
@@ -138,12 +140,26 @@ export const chatSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
+
       .addCase(sendMessage.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
+        // Update Messages
         state.status = "succeeded";
         state.messages = [...state.messages, action.payload];
+
+        // Update Conversation
+        let conversation = {
+          ...action.payload.conversation,
+          latestMessage: action.payload,
+        };
+        let newConvos = [...state.conversations].filter(
+          (convo) => convo._id !== conversation._id
+        );
+        newConvos.unshift(conversation);
+        state.conversations = newConvos;
+        state.files = [];
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.status = "failed";
