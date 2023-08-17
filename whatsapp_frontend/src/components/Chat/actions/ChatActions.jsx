@@ -9,6 +9,7 @@ export default function ChatActions() {
   const [showPicker, setShowPicker] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const textRef = useRef();
   const dispatch = useDispatch();
@@ -26,9 +27,11 @@ export default function ChatActions() {
 
   const SendMessageHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
     dispatch(sendMessage(values));
     setMessage("");
     setShowPicker(false);
+    setLoading(false);
   };
 
   return (
@@ -57,9 +60,9 @@ export default function ChatActions() {
         </ul>
         {/* Input */}
         <Input message={message} setMessage={setMessage} textRef={textRef} />
-        {/* Send button */}
+        {/*Send button*/}
         <button type="submit" className="btn">
-          {status === "loading" ? (
+          {status === "loading" && loading ? (
             <ClipLoader color="#E9EDEF" size={25} />
           ) : (
             <SendIcon className="dark:fill-dark_svg_1" />
