@@ -1,12 +1,13 @@
 import { Attachments, EmojiPickerApp, Input } from "./index";
 import { SendIcon } from "../../../svg";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../../features/chatSlice";
 import { ClipLoader } from "react-spinners";
 
 export default function ChatActions() {
   const [showPicker, setShowPicker] = useState(false);
+  const textRef = useRef();
 
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function ChatActions() {
     e.preventDefault();
     dispatch(sendMessage(values));
     setMessage("");
+    setShowPicker(false);
   };
 
   return (
@@ -40,11 +42,14 @@ export default function ChatActions() {
           <EmojiPickerApp
             showPicker={showPicker}
             setShowPicker={setShowPicker}
+            message={message}
+            setMessage={setMessage}
+            textRef={textRef}
           />
           <Attachments />
         </ul>
         {/* Input */}
-        <Input message={message} setMessage={setMessage} />
+        <Input message={message} setMessage={setMessage} textRef={textRef} />
         {/* Send button */}
         <button type="submit" className="btn">
           {status === "loading" ? (
