@@ -15,7 +15,7 @@ export default function Home() {
     if (user?.token) {
       dispatch(getConversations(user.token));
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
