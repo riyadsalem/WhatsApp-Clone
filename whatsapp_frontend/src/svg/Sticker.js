@@ -3,7 +3,7 @@ import React from "react";
 export default function StickerIcon() {
   return (
     <svg width="53" height="53" fill="none" viewBox="0 0 53 53">
-      <g clipPath="url(#clip0_850:74884)">
+      <g clipPath="url(#sticker-ClipPath)">
         <circle cx="26.5" cy="26.5" r="26.5" fill="#0063CB"></circle>
         <path
           fill="#0070E6"
@@ -21,7 +21,7 @@ export default function StickerIcon() {
         ></path>
       </g>
       <defs>
-        <clipPath id="clip0_850:74884">
+        <clipPath id="sticker-ClipPath">
           <path fill="#fff" d="M0 0H53V53H0z"></path>
         </clipPath>
       </defs>

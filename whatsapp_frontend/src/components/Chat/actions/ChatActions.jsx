@@ -7,9 +7,10 @@ import { ClipLoader } from "react-spinners";
 
 export default function ChatActions() {
   const [showPicker, setShowPicker] = useState(false);
-  const textRef = useRef();
-
+  const [showAttachments, setShowAttachments] = useState(false);
   const [message, setMessage] = useState("");
+
+  const textRef = useRef();
   const dispatch = useDispatch();
 
   const { activeConversation, status } = useSelector((state) => state.chat);
@@ -40,13 +41,19 @@ export default function ChatActions() {
         {/*Emojis and attachpments*/}
         <ul className="flex gap-x-2">
           <EmojiPickerApp
-            showPicker={showPicker}
-            setShowPicker={setShowPicker}
+            textRef={textRef}
             message={message}
             setMessage={setMessage}
-            textRef={textRef}
+            showPicker={showPicker}
+            setShowPicker={setShowPicker}
+            setShowAttachments={setShowAttachments}
           />
-          <Attachments />
+
+          <Attachments
+            showAttachments={showAttachments}
+            setShowAttachments={setShowAttachments}
+            setShowPicker={setShowPicker}
+          />
         </ul>
         {/* Input */}
         <Input message={message} setMessage={setMessage} textRef={textRef} />
