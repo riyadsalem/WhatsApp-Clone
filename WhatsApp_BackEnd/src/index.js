@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import app from "./app.js";
 import logger from "./configs/logger.config.js";
 import { Server } from "socket.io";
+import SocketServer from "./SocketServer.js";
 
 const PORT = process.env.PORT || 8000;
 const { DATABASE_URL } = process.env;
@@ -42,10 +43,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   logger.info("socket io connected successfully.");
-  socket.on("sendMessage", (msg) => {
-    console.log("message sent to backend", msg);
-    io.emit("receiveMessage", msg);
-  });
+  SocketServer(socket, io);
 });
 
 //handle server errors

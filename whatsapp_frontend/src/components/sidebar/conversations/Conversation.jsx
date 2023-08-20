@@ -3,8 +3,9 @@ import dateHandler from "../../../utils/date";
 import { open_create_conversation } from "../../../features/chatSlice";
 import { getConversationId } from "../../../utils/chat";
 import { capitalize } from "../../../utils/string";
+import SocketContext from "../../../context/SocketContext";
 
-export default function Conversation({ convo }) {
+function Conversation({ convo, socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
@@ -16,7 +17,8 @@ export default function Conversation({ convo }) {
     token,
   };
   const openConversation = async () => {
-    dispatch(open_create_conversation(values));
+    let newConvo = await dispatch(open_create_conversation(values));
+    socket.emit("join conversation", newConvo.payload._id);
   };
   return (
     <li
@@ -73,3 +75,11 @@ export default function Conversation({ convo }) {
     </li>
   );
 }
+
+const ConversationWithContext = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <Conversation {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+
+export default ConversationWithContext;

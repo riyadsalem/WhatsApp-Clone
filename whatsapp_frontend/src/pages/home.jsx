@@ -6,11 +6,14 @@ import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
 
 function Home({ socket }) {
-  console.log(socket);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
   console.log("activeConversation", activeConversation);
+
+  useEffect(() => {
+    socket.emit("join", user._id);
+  }, [socket, user]);
 
   //Get Conversations
   useEffect(() => {
