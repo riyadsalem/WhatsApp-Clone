@@ -1,14 +1,10 @@
 import mongoose from "mongoose";
 import app from "./app.js";
 import logger from "./configs/logger.config.js";
+import { Server } from "socket.io";
 
 const PORT = process.env.PORT || 8000;
 const { DATABASE_URL } = process.env;
-
-let server;
-server = app.listen(PORT, () => {
-  logger.info(`SERVER IS LISTENING AT ${PORT}....`);
-});
 
 //exit on mongoDB error
 mongoose.connection.on("error", (err) => {
@@ -30,6 +26,23 @@ mongoose
   .then(() => {
     logger.info("CONNECTED TO MONGODB.");
   });
+
+let server;
+server = app.listen(PORT, () => {
+  logger.info(`SERVER IS LISTENING AT ${PORT}....`);
+});
+
+//socket io
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: process.env.CLIENT_ENDPOINT,
+  },
+});
+
+io.on("connection", (socket) => {
+  logger.info("socket io connected successfully.");
+});
 
 //handle server errors
 const exitHandler = () => {
