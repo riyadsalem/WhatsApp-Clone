@@ -1,29 +1,70 @@
 import Sidebar from "../components/sidebar/Sidebar";
 import { useSelector, useDispatch } from "react-redux";
-import { getConversations } from "../features/chatSlice";
-import { useEffect } from "react";
+import {
+  getConversations,
+  updateMessagesAndConversations,
+} from "../features/chatSlice";
+import { useEffect, useState } from "react";
 import { ChatContainer, WhatsappHome } from "../components/Chat";
+import SocketContext from "../context/SocketContext";
 
-export default function Home() {
+function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  //typing
+  const [typing, setTyping] = useState(false);
+
   console.log("activeConversation", activeConversation);
 
-  //Get Conversations
+  //join user into the socket io
+  useEffect(() => {
+    socket.emit("join", user._id);
+
+    //get online users
+    socket.on("get-online-users", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [user]);
+
+  //get Conversations
   useEffect(() => {
     if (user?.token) {
       dispatch(getConversations(user.token));
     }
-  }, [user, dispatch]);
+  }, [user]);
+
+  useEffect(() => {
+    //lsitening to receiving a message
+    socket.on("receive message", (message) => {
+      dispatch(updateMessagesAndConversations(message));
+    });
+
+    //listening when a user is typing
+    socket.on("typing", (conversation) => setTyping(conversation));
+    socket.on("stop typing", () => setTyping(false));
+  }, []);
 
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
       {/*container*/}
       <div className="container h-screen flex py-[19px]">
-        <Sidebar />
-        {activeConversation._id ? <ChatContainer /> : <WhatsappHome />}
+        <Sidebar onlineUsers={onlineUsers} typing={typing} />
+        {activeConversation._id ? (
+          <ChatContainer onlineUsers={onlineUsers} typing={typing} />
+        ) : (
+          <WhatsappHome />
+        )}
       </div>
     </div>
   );
 }
+
+const HomeWithSocket = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <Home {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+export default HomeWithSocket;
