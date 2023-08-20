@@ -1,11 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import dateHandler from "../../../utils/date";
 import { open_create_conversation } from "../../../features/chatSlice";
-import { getConversationId, getConversationName } from "../../../utils/chat";
+import {
+  getConversationId,
+  getConversationName,
+  getConversationPicture,
+} from "../../../utils/chat";
 import { capitalize } from "../../../utils/string";
 import SocketContext from "../../../context/SocketContext";
 
-function Conversation({ convo, socket }) {
+function Conversation({ convo, socket, online }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
@@ -36,9 +40,13 @@ function Conversation({ convo, socket }) {
         {/* Left */}
         <div className="flex items-center gap-x-3">
           {/* Conversation user picture */}
-          <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
+          <div
+            className={`relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden ${
+              online ? "online" : ""
+            }`}
+          >
             <img
-              src={convo.picture}
+              src={getConversationPicture(user, convo.users)}
               alt={convo?.alt ? "picture" : "picture"}
               className="w-full h-full object-cover "
             />
