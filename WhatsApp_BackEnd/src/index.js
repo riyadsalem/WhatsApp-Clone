@@ -42,6 +42,10 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   logger.info("socket io connected successfully.");
+  socket.on("sendMessage", (msg) => {
+    console.log("message sent to backend", msg);
+    io.emit("receiveMessage", msg);
+  });
 });
 
 //handle server errors
