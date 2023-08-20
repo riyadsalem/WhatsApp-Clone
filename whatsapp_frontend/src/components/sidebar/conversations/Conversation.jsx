@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import dateHandler from "../../../utils/date";
 import { open_create_conversation } from "../../../features/chatSlice";
-import { getConversationId } from "../../../utils/chat";
+import { getConversationId, getConversationName } from "../../../utils/chat";
 import { capitalize } from "../../../utils/string";
 import SocketContext from "../../../context/SocketContext";
 
@@ -45,7 +45,7 @@ function Conversation({ convo, socket }) {
           <div className="w-full flex flex-col">
             {/*Conversation name*/}
             <h1 className="font-bold flex items-center gap-x-2">
-              {capitalize(convo.name)}
+              {capitalize(getConversationName(user, convo.users))}
             </h1>
             {/* Conversation message */}
             <div>
