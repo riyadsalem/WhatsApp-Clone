@@ -1,6 +1,9 @@
 import Sidebar from "../components/sidebar/Sidebar";
 import { useSelector, useDispatch } from "react-redux";
-import { getConversations } from "../features/chatSlice";
+import {
+  getConversations,
+  updateMessagesAndConversations,
+} from "../features/chatSlice";
 import { useEffect } from "react";
 import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
@@ -21,6 +24,13 @@ function Home({ socket }) {
       dispatch(getConversations(user.token));
     }
   }, [user, dispatch]);
+
+  useEffect(() => {
+    socket.on("receive message", (message) => {
+      // console.log("Message ========> ", message);
+      dispatch(updateMessagesAndConversations(message));
+    });
+  }, []);
 
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">

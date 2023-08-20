@@ -16,10 +16,12 @@ function Conversation({ convo, socket }) {
     isGroup: convo.isGroup ? convo._id : false,
     token,
   };
+
   const openConversation = async () => {
     let newConvo = await dispatch(open_create_conversation(values));
     socket.emit("join conversation", newConvo.payload._id);
   };
+
   return (
     <li
       className={`list-none h-[72px] w-full dark:bg-dark_bg_1 hover:${
