@@ -9,7 +9,7 @@ import {
 import { capitalize } from "../../../utils/string";
 import SocketContext from "../../../context/SocketContext";
 
-function Conversation({ convo, socket, online }) {
+function Conversation({ convo, socket, online, typing }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
@@ -51,27 +51,34 @@ function Conversation({ convo, socket, online }) {
               className="w-full h-full object-cover "
             />
           </div>
+
           {/* Coversation name and message */}
           <div className="w-full flex flex-col">
             {/*Conversation name*/}
             <h1 className="font-bold flex items-center gap-x-2">
               {capitalize(getConversationName(user, convo.users))}
             </h1>
+
             {/* Conversation message */}
             <div>
               <div className="flex items-center gap-x-1 dark:text-dark_text_2">
                 <div className="flex-1 items-center gap-x-1 dark:text-dark_text_2">
-                  <p>
-                    {convo.latestMessage?.message.length > 25
-                      ? `${convo.latestMessage?.message.substring(0, 25)}...`
-                      : convo.latestMessage?.message}
-                  </p>
+                  {typing === convo._id ? (
+                    <p className="text-green_1">Typing...</p>
+                  ) : (
+                    <p>
+                      {convo.latestMessage?.message.length > 25
+                        ? `${convo.latestMessage?.message.substring(0, 25)}...`
+                        : convo.latestMessage?.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {/* Right */}
+
+        {/*Right*/}
         <div className="flex flex-col gap-y-4 items-end text-xs">
           <span className="dark:text-dark_text_2">
             {convo.latestMessage?.createdAt
