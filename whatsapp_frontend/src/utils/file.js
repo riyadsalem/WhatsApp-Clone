@@ -1,4 +1,6 @@
-export default function getFileType(memType) {
+import { PDF, DEFAULT, DOCX, PPTX, TXT } from "../images/file/index";
+
+export const getFileType = (memType) => {
   switch (memType) {
     case "text/plain":
       return "TXT";
@@ -26,4 +28,19 @@ export default function getFileType(memType) {
     default:
       return "IMAGE";
   }
-}
+};
+
+export const getImagesToFiles = (fileType) => {
+  switch (fileType) {
+    case "PDF":
+      return PDF;
+    case "DEFAULT":
+      return DEFAULT;
+    case "DOCX":
+      return DOCX;
+    case "PPTX":
+      return PPTX;
+    default:
+      return TXT;
+  }
+};

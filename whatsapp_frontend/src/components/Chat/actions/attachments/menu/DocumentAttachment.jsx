@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { DocumentIcon } from "../../../../../svg";
 import { addFiles } from "../../../../../features/chatSlice";
 import { useDispatch } from "react-redux";
-import getFileType from "../../../../../utils/file";
+import { getFileType } from "../../../../../utils/file";
 
 export default function DocumentAttachment() {
   const dispatch = useDispatch();

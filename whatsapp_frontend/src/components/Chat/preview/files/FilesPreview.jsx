@@ -11,7 +11,7 @@ export default function FilesPreview() {
         {/*Header*/}
         <Header activeIndex={activeIndex} />
         {/*Viewing selected file*/}
-        <FileViewer />
+        <FileViewer activeIndex={activeIndex} />
         <div className="w-full flex flex-col items-center">
           {/*Message Input*/}
           <Input />

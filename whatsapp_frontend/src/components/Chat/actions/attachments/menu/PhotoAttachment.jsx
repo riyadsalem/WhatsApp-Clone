@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { PhotoIcon } from "../../../../../svg";
 import { useDispatch } from "react-redux";
 import { addFiles } from "../../../../../features/chatSlice";
-import getFileType from "../../../../../utils/file";
+import { getFileType } from "../../../../../utils/file";
 
 export default function PhotoAttachment() {
   const dispatch = useDispatch();
