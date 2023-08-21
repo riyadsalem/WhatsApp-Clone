@@ -1,13 +1,11 @@
 import { useRef } from "react";
 import { PhotoIcon } from "../../../../../svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addFiles } from "../../../../../features/chatSlice";
 
 export default function PhotoAttachment() {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const { files } = useSelector((state) => state.chat);
-  console.log(files);
 
   const imageHandler = (e) => {
     let files = Array.from(e.target.files);
@@ -35,7 +33,7 @@ export default function PhotoAttachment() {
             addFiles({
               file: file,
               fileData: e.target.result,
-              type: "images",
+              type: file.type.split("/")[0],
             })
           );
         };
