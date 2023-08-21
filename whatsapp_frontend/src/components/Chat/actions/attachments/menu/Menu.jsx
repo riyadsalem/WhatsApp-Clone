@@ -4,6 +4,7 @@ import {
   CameraIcon,
   StickerIcon,
 } from "../../../../../svg";
+import { PhotoAttachment } from "./";
 
 export default function Menu() {
   return (
@@ -28,6 +29,7 @@ export default function Menu() {
           <StickerIcon />
         </button>
       </li>
+      <PhotoAttachment />
     </ul>
   );
 }
