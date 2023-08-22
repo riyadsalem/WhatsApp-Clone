@@ -1,10 +1,30 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getImagesToFiles } from "../../../../utils/file";
 import Add from "./Add";
 import { SendIcon } from "../../../../svg";
+import { useState } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import { uploadFiles } from "../../../../utils/upload";
 
-export default function HandleAndSend({ activeIndex, setActiveIndex }) {
-  const { files } = useSelector((state) => state.chat);
+export default function HandleAndSend({
+  activeIndex,
+  setActiveIndex,
+  message,
+}) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const { files, activeConversation } = useSelector((state) => state.chat);
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
+
+  const sendMessageHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // upload files first
+    const uploaded_files = await uploadFiles(files);
+    console.log(uploaded_files);
+    setLoading(false);
+  };
   return (
     <div className="w-[97%] flex items-center justify-between mt-2 border-t dark:border-dark_border_2">
       {/*Empty*/}
@@ -40,8 +60,15 @@ export default function HandleAndSend({ activeIndex, setActiveIndex }) {
         <Add />
       </div>
       {/*Send button*/}
-      <div className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer">
-        <SendIcon className="fill-white" />
+      <div
+        className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer"
+        onClick={(e) => sendMessageHandler(e)}
+      >
+        {loading ? (
+          <ClipLoader color="#E9EDEF" size={25} />
+        ) : (
+          <SendIcon className="fill-white" />
+        )}
       </div>
     </div>
   );
