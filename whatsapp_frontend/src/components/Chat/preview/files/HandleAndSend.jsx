@@ -37,7 +37,7 @@ export default function HandleAndSend({ activeIndex, setActiveIndex }) {
           </div>
         ))}
         {/* Add another file */}
-        <Add setActiveIndex={setActiveIndex} />
+        <Add />
       </div>
       {/*Send button*/}
       <div className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer">
