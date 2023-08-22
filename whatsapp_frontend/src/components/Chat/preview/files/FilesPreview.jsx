@@ -17,7 +17,10 @@ export default function FilesPreview() {
           {/*Message Input*/}
           <Input message={message} setMessage={setMessage} />
           {/*Send and manipulate files*/}
-          <HandleAndSend />
+          <HandleAndSend
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
         </div>
       </div>
     </div>
