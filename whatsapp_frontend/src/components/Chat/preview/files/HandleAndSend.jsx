@@ -1,11 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getImagesToFiles } from "../../../../utils/file";
 import Add from "./Add";
-import { SendIcon } from "../../../../svg";
+import { CloseIcon, SendIcon } from "../../../../svg";
 import { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { uploadFiles } from "../../../../utils/upload";
-import { sendMessage } from "../../../../features/chatSlice";
+import {
+  removeFileFromFiles,
+  sendMessage,
+} from "../../../../features/chatSlice";
 import SocketContext from "../../../../context/SocketContext";
 
 function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
@@ -36,6 +39,11 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
     setLoading(false);
   };
 
+  //Handle remove file
+  const handleRemoveFile = (index) => {
+    dispatch(removeFileFromFiles(index));
+  };
+
   return (
     <div className="w-[97%] flex items-center justify-between mt-2 border-t dark:border-dark_border_2">
       {/*Empty*/}
@@ -45,7 +53,7 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
         {files.map((file, i) => (
           <div
             key={i}
-            className={`relative w-14 h-14 border dark:border-white mt-2 rounded-md overflow-hidden cursor-pointer
+            className={`fileThumbnail relative w-14 h-14 border dark:border-white mt-2 rounded-md overflow-hidden cursor-pointer
             ${activeIndex === i ? "border-[3px] !border-green_1" : ""}
             `}
             onClick={() => setActiveIndex(i)}
@@ -65,6 +73,13 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
                 className="w-8 h-10 mt-1.5 ml-2.5"
               />
             )}
+            {/*Remove file icon*/}
+            <div
+              className="removeFileIcon hidden"
+              onClick={() => handleRemoveFile(i)}
+            >
+              <CloseIcon className="dark:fill-white absolute right-0 top-0 w-4 h-4" />
+            </div>
           </div>
         ))}
         {/* Add another file */}
