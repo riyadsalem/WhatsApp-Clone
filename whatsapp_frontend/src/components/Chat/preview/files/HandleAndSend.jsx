@@ -5,26 +5,37 @@ import { SendIcon } from "../../../../svg";
 import { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { uploadFiles } from "../../../../utils/upload";
+import { sendMessage } from "../../../../features/chatSlice";
+import SocketContext from "../../../../context/SocketContext";
 
-export default function HandleAndSend({
-  activeIndex,
-  setActiveIndex,
-  message,
-}) {
+function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { files, activeConversation } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
   const { token } = user;
 
+  //send message handler
   const sendMessageHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // upload files first
+
+    //uplaod files first
     const uploaded_files = await uploadFiles(files);
-    console.log(uploaded_files);
+
+    //send the message
+    const values = {
+      token,
+      message,
+      convo_id: activeConversation._id,
+      files: uploaded_files.length > 0 ? uploaded_files : [],
+    };
+
+    let newMsg = await dispatch(sendMessage(values));
+    socket.emit("send message", newMsg.payload);
     setLoading(false);
   };
+
   return (
     <div className="w-[97%] flex items-center justify-between mt-2 border-t dark:border-dark_border_2">
       {/*Empty*/}
@@ -73,3 +84,10 @@ export default function HandleAndSend({
     </div>
   );
 }
+
+const HandleAndSendWithContext = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <HandleAndSend {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+export default HandleAndSendWithContext;
