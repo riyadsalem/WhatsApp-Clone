@@ -17,8 +17,6 @@ function Home({ socket }) {
   //typing
   const [typing, setTyping] = useState(false);
 
-  console.log("activeConversation", activeConversation);
-
   //join user into the socket io
   useEffect(() => {
     socket.emit("join", user._id);

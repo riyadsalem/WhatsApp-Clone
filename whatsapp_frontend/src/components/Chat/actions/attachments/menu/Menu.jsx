@@ -4,6 +4,7 @@ import {
   CameraIcon,
   StickerIcon,
 } from "../../../../../svg";
+import { DocumentAttachment, PhotoAttachment } from "./";
 
 export default function Menu() {
   return (
@@ -18,6 +19,7 @@ export default function Menu() {
           <ContactIcon />
         </button>
       </li>
+      <DocumentAttachment />
       <li>
         <button type="button" className="bg-[#D3396D] rounded-full">
           <CameraIcon />
@@ -28,6 +30,7 @@ export default function Menu() {
           <StickerIcon />
         </button>
       </li>
+      <PhotoAttachment />
     </ul>
   );
 }

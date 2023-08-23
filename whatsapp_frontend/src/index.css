@@ -42,8 +42,18 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+
   .online {
     border: 2.5px solid #00a884;
+  }
+
+  .hview {
+    height: calc(100vh - 290px);
+    padding: 8px 0;
+  }
+
+  .fileThumbnail:hover .removeFileIcon {
+    display: block;
   }
 }
 
