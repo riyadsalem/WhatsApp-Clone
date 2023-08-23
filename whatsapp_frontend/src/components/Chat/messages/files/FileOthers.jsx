@@ -6,7 +6,7 @@ export default function FileOthers({ file, type, me }) {
     <div className="bg-green_4 p-2 rounded-lg">
       {/*Container*/}
       <div className="flex justify-between gap-x-8">
-        {/*File infos*/}
+        {/*File infos */}
         <div className="flex items-center gap-2">
           <img
             src={getImagesToFiles(type)}
