@@ -10,6 +10,7 @@ import {
   sendMessage,
 } from "../../../../features/chatSlice";
 import SocketContext from "../../../../context/SocketContext";
+import VideoThumbnail from "react-video-thumbnail";
 
 function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
                 className="w-full h-full object-cover"
               />
             ) : file.type === "VIDEO" ? (
-              <video src={file.fileData}></video>
+              <VideoThumbnail videoUrl={file.fileData} />
             ) : (
               <img
                 src={getImagesToFiles(file.type)}
