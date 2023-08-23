@@ -1,6 +1,6 @@
 import moment from "moment";
 import TraingleIcon from "../../../../svg/triangle";
-import { FileImageVideo } from "./";
+import { FileImageVideo, FileOthers } from "./";
 
 export default function FileMessage({ FileMessage, message, me }) {
   const { file, type } = FileMessage;
@@ -35,13 +35,17 @@ export default function FileMessage({ FileMessage, message, me }) {
         `}
         >
           {/*Message*/}
-          <p className={`h-full text-sm`}>
+          <div
+            className={`h-full text-sm ${
+              type !== "IMAGE" && type !== "VIDEO" ? "pb-5" : ""
+            }`}
+          >
             {type === "IMAGE" || type === "VIDEO" ? (
               <FileImageVideo url={file.secure_url} type={type} />
             ) : (
-              ""
+              <FileOthers file={file} type={type} me={me} />
             )}
-          </p>
+          </div>
 
           {/*Message Date*/}
           <span className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_5 leading-none">
