@@ -1,2 +1,2 @@
-# NaN || (!WhatsApp-Clone && vErY CoOo1!L)~~~~`👉🤝👈`
+# NaN || (!WhatsApp-Clone && vErY CoOo1!L)~`👉🤝👈`
 
