@@ -1,7 +1,14 @@
 import { Ringing, Header, CallArea, CallAcions } from "./";
 import { useState } from "react";
 
-export default function Call({ call, setCall, callAccepted }) {
+export default function Call({
+  call,
+  setCall,
+  callAccepted,
+  myVideo,
+  stream,
+  userVideo,
+}) {
   const { receiveingCall } = call;
   const [showActions, setShowActions] = useState(false);
 
@@ -21,6 +28,32 @@ export default function Call({ call, setCall, callAccepted }) {
             <CallArea name="riyad salem" />
             {/* Call actions */}
             {showActions ? <CallAcions /> : null}
+          </div>
+          {/* Video Streams */}
+          <div>
+            {/* User Video */}
+            <div>
+              <video
+                ref={userVideo}
+                playsInline
+                muted
+                autoPlay
+                className={"largeVideoCall"}
+              ></video>
+            </div>
+
+            {/* My Video */}
+            <div>
+              <video
+                ref={myVideo}
+                playsInline
+                muted
+                autoPlay
+                className={`SmallVideoCall ${
+                  showActions ? "moveVideoCall" : ""
+                }`}
+              ></video>
+            </div>
           </div>
         </div>
       </div>

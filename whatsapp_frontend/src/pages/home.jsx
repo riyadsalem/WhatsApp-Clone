@@ -4,7 +4,7 @@ import {
   getConversations,
   updateMessagesAndConversations,
 } from "../features/chatSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
 import Call from "../components/Chat/call/Call";
@@ -23,6 +23,9 @@ function Home({ socket }) {
   //call
   const [call, setCall] = useState(callData);
   const [callAccepted, setCallAccepted] = useState(false);
+  const [stream, setStream] = useState();
+  const myVideo = useRef();
+  const userVideo = useRef();
 
   //typing
   const [typing, setTyping] = useState(false);
@@ -70,7 +73,14 @@ function Home({ socket }) {
       </div>
 
       {/* Call */}
-      <Call call={call} setCall={setCall} callAccepted={callAccepted} />
+      <Call
+        call={call}
+        setCall={setCall}
+        callAccepted={callAccepted}
+        myVideo={myVideo}
+        userVideo={userVideo}
+        stream={stream}
+      />
     </>
   );
 }
