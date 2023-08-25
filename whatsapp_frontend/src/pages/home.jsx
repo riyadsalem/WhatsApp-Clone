@@ -10,7 +10,7 @@ import SocketContext from "../context/SocketContext";
 import Call from "../components/Chat/call/Call";
 
 const callData = {
-  receiveingCall: true,
+  receiveingCall: false,
   callEnded: false,
 };
 

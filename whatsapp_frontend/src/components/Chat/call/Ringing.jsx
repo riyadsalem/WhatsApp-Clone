@@ -11,9 +11,8 @@ export default function Ringing({ call, setCall }) {
     }, 1000);
   };
 
-  console.log(timer);
   useEffect(() => {
-    if (timer <= 30) {
+    if (timer <= 3) {
       handleTimer();
     } else {
       setCall({ ...call, receiveingCall: false });
