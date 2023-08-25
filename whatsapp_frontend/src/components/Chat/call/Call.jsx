@@ -1,8 +1,12 @@
 import { Ringing } from "./";
-export default function Call() {
+export default function Call({ call, setCall, callAccepted }) {
+  const { receiveingCall } = call;
+
   return (
     <div>
-      <Ringing />
+      {receiveingCall && !callAccepted && (
+        <Ringing call={call} setCall={setCall} />
+      )}
     </div>
   );
 }

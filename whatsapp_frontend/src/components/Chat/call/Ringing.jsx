@@ -1,6 +1,26 @@
+import { useEffect, useState } from "react";
 import { CloseIcon, ValidIcon } from "../../../svg";
 
-export default function Ringing() {
+export default function Ringing({ call, setCall }) {
+  const [timer, setTimer] = useState(0);
+  let interval;
+
+  const handleTimer = () => {
+    interval = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
+  };
+
+  console.log(timer);
+  useEffect(() => {
+    if (timer <= 30) {
+      handleTimer();
+    } else {
+      setCall({ ...call, receiveingCall: false });
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
   return (
     <div className="dark:bg-dark_bg_1 rounded-lg fixed  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg z-30">
       {/*Container*/}

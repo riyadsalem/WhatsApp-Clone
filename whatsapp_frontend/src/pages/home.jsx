@@ -9,11 +9,20 @@ import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
 import Call from "../components/Chat/call/Call";
 
+const callData = {
+  receiveingCall: true,
+  callEnded: false,
+};
+
 function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
   const [onlineUsers, setOnlineUsers] = useState([]);
+
+  //call
+  const [call, setCall] = useState(callData);
+  const [callAccepted, setCallAccepted] = useState(false);
 
   //typing
   const [typing, setTyping] = useState(false);
@@ -61,7 +70,7 @@ function Home({ socket }) {
       </div>
 
       {/* Call */}
-      <Call />
+      <Call call={call} setCall={setCall} callAccepted={callAccepted} />
     </>
   );
 }
