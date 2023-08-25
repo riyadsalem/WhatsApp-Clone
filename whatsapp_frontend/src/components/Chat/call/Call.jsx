@@ -8,8 +8,9 @@ export default function Call({
   myVideo,
   stream,
   userVideo,
+  answerCall,
 }) {
-  const { receiveingCall, name, picture } = call;
+  const { receiveingCall, name, callEnded } = call;
   const [showActions, setShowActions] = useState(false);
 
   return (
@@ -34,34 +35,38 @@ export default function Call({
           {/* Video Streams */}
           <div>
             {/* User Video */}
-            <div>
-              <video
-                ref={userVideo}
-                playsInline
-                muted
-                autoPlay
-                className={"largeVideoCall"}
-              ></video>
-            </div>
+            {callAccepted && !callEnded ? (
+              <div>
+                <video
+                  ref={userVideo}
+                  playsInline
+                  muted
+                  autoPlay
+                  className={"largeVideoCall"}
+                ></video>
+              </div>
+            ) : null}
 
             {/* My Video */}
-            <div>
-              <video
-                ref={myVideo}
-                playsInline
-                muted
-                autoPlay
-                className={`SmallVideoCall ${
-                  showActions ? "moveVideoCall" : ""
-                }`}
-              ></video>
-            </div>
+            {stream ? (
+              <div>
+                <video
+                  ref={myVideo}
+                  playsInline
+                  muted
+                  autoPlay
+                  className={`SmallVideoCall ${
+                    showActions ? "moveVideoCall" : ""
+                  }`}
+                ></video>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
 
       {receiveingCall && !callAccepted && (
-        <Ringing call={call} setCall={setCall} />
+        <Ringing call={call} setCall={setCall} answerCall={answerCall} />
       )}
     </>
   );

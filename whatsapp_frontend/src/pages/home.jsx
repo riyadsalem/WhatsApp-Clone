@@ -35,6 +35,7 @@ function Home({ socket }) {
   const [stream, setStream] = useState();
   const myVideo = useRef();
   const userVideo = useRef();
+  const connectionRef = useRef();
   const { socketId } = call;
 
   //typing
@@ -58,7 +59,7 @@ function Home({ socket }) {
     });
   }, []);
 
-  //call user function
+  //--call user funcion
   const callUser = () => {
     enableMedia();
     setCall({
@@ -86,6 +87,35 @@ function Home({ socket }) {
     peer.on("stream", (stream) => {
       userVideo.current.srcObject = stream;
     });
+
+    socket.on("call accepted", (signal) => {
+      setCallAccepted(true);
+      peer.signal(signal);
+    });
+
+    connectionRef.current = peer;
+  };
+  //--answer call  funcion
+  const answerCall = () => {
+    enableMedia();
+    setCallAccepted(true);
+
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+
+    peer.on("signal", (data) => {
+      socket.emit("answer call", { signal: data, to: call.socketId });
+    });
+
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+
+    peer.signal(call.signal);
+    connectionRef.current = peer;
   };
 
   const setupMedia = () => {
@@ -154,6 +184,7 @@ function Home({ socket }) {
         myVideo={myVideo}
         userVideo={userVideo}
         stream={stream}
+        answerCall={answerCall}
       />
     </>
   );

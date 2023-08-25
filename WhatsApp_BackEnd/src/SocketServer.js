@@ -56,4 +56,9 @@ export default function (socket, io) {
       picture: data.picture,
     });
   });
+
+  //---answer call
+  socket.on("answer call", (data) => {
+    io.to(data.to).emit("call accepted", data.signal);
+  });
 }
