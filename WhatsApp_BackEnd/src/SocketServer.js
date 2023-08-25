@@ -43,4 +43,10 @@ export default function (socket, io) {
   socket.on("stop typing", (conversation) => {
     socket.in(conversation).emit("stop typing");
   });
+
+  //call
+  //---------call user
+  socket.emit("call user", (data) => {
+    let userId = data.userToCall;
+  });
 }

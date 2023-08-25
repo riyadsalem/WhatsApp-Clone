@@ -8,11 +8,19 @@ import { useEffect, useRef, useState } from "react";
 import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
 import Call from "../components/Chat/call/Call";
+import {
+  getConversationId,
+  getConversationName,
+  getConversationPicture,
+} from "../utils/chat";
+import Peer from "simple-peer";
 
 const callData = {
   socketId: "",
   receiveingCall: false,
   callEnded: false,
+  name: "",
+  picture: "",
 };
 
 function Home({ socket }) {
@@ -27,6 +35,7 @@ function Home({ socket }) {
   const [stream, setStream] = useState();
   const myVideo = useRef();
   const userVideo = useRef();
+  const { socketId } = call;
 
   //typing
   const [typing, setTyping] = useState(false);
@@ -39,13 +48,46 @@ function Home({ socket }) {
     });
   }, []);
 
+  //call user function
+  const callUser = () => {
+    enableMedia();
+    setCall({
+      ...call,
+      name: getConversationName(user, activeConversation.users),
+      picture: getConversationPicture(user, activeConversation.users),
+    });
+
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+
+    peer.on("signal", (data) => {
+      socket.emit("call user", {
+        userToCall: getConversationId(user, activeConversation.users),
+        signal: data,
+        from: socketId,
+        name: user.name,
+        picture: user.picture,
+      });
+    });
+
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+  };
+
   const setupMedia = () => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
-        //   userVideo.current.srcObject = stream;
       });
+  };
+
+  const enableMedia = () => {
+    myVideo.current.srcObject = stream;
   };
 
   //join user into the socket io
@@ -83,7 +125,11 @@ function Home({ socket }) {
         <div className="container h-screen flex py-[19px]">
           <Sidebar onlineUsers={onlineUsers} typing={typing} />
           {activeConversation._id ? (
-            <ChatContainer onlineUsers={onlineUsers} typing={typing} />
+            <ChatContainer
+              onlineUsers={onlineUsers}
+              typing={typing}
+              callUser={callUser}
+            />
           ) : (
             <WhatsappHome />
           )}
