@@ -9,13 +9,15 @@ export default function Call({
   stream,
   userVideo,
 }) {
-  const { receiveingCall } = call;
+  const { receiveingCall, name, picture } = call;
   const [showActions, setShowActions] = useState(false);
 
   return (
     <>
       <div
-        className="fixed top-1/2 left-1/2 -translate-1/2 -translate-y-1/2 w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg"
+        className={`fixed top-1/2 left-1/2 -translate-1/2 -translate-y-1/2 w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg ${
+          receiveingCall && !callAccepted ? "hidden" : ""
+        }`}
         onMouseOver={() => setShowActions(true)}
         onMouseOut={() => setShowActions(false)}
       >
@@ -25,7 +27,7 @@ export default function Call({
             {/* Header */}
             <Header />
             {/* Call area */}
-            <CallArea name="riyad salem" />
+            <CallArea name={name} />
             {/* Call actions */}
             {showActions ? <CallAcions /> : null}
           </div>
