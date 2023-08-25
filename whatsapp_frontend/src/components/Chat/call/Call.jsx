@@ -1,4 +1,4 @@
-import { Ringing, Header } from "./";
+import { Ringing, Header, CallArea } from "./";
 export default function Call({ call, setCall, callAccepted }) {
   const { receiveingCall } = call;
 
@@ -10,6 +10,8 @@ export default function Call({ call, setCall, callAccepted }) {
           <div>
             {/* Header */}
             <Header />
+            {/* Call area */}
+            <CallArea name="riyad salem" />
           </div>
         </div>
       </div>
