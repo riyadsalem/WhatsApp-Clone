@@ -45,8 +45,15 @@ export default function (socket, io) {
   });
 
   //call
-  //---------call user
-  socket.emit("call user", (data) => {
+  //---call user
+  socket.on("call user", (data) => {
     let userId = data.userToCall;
+    let userSocketId = onlineUsers.find((user) => user.userId == userId);
+    io.to(userSocketId.socketId).emit("call user", {
+      signal: data.signal,
+      from: data.from,
+      name: data.name,
+      picture: data.picture,
+    });
   });
 }

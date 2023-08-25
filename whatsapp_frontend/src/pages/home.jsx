@@ -46,6 +46,16 @@ function Home({ socket }) {
     socket.on("setup socket", (id) => {
       setCall({ ...call, socketId: id });
     });
+    socket.on("call user", (data) => {
+      setCall({
+        ...call,
+        socketId: data.from,
+        name: data.name,
+        picture: data.picture,
+        signal: data.signal,
+        receiveingCall: true,
+      });
+    });
   }, []);
 
   //call user function
