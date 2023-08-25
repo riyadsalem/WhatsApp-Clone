@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { ChatContainer, WhatsappHome } from "../components/Chat";
 import SocketContext from "../context/SocketContext";
+import Call from "../components/Chat/call/Call";
 
 function Home({ socket }) {
   const dispatch = useDispatch();
@@ -46,17 +47,22 @@ function Home({ socket }) {
   }, []);
 
   return (
-    <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
-      {/*container*/}
-      <div className="container h-screen flex py-[19px]">
-        <Sidebar onlineUsers={onlineUsers} typing={typing} />
-        {activeConversation._id ? (
-          <ChatContainer onlineUsers={onlineUsers} typing={typing} />
-        ) : (
-          <WhatsappHome />
-        )}
+    <>
+      <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center overflow-hidden">
+        {/*container*/}
+        <div className="container h-screen flex py-[19px]">
+          <Sidebar onlineUsers={onlineUsers} typing={typing} />
+          {activeConversation._id ? (
+            <ChatContainer onlineUsers={onlineUsers} typing={typing} />
+          ) : (
+            <WhatsappHome />
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* Call */}
+      <Call />
+    </>
   );
 }
 
