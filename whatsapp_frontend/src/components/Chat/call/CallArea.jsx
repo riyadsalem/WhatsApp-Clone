@@ -11,7 +11,6 @@ export default function CallArea({ name }) {
             <b>{name ? capitalize(name) : ""}</b>
           </h1>
           <span className="text-dark_text_1">Ringing...</span>
-          <span className="text-dark_text_2">20:15</span>
         </div>
       </div>
     </div>
