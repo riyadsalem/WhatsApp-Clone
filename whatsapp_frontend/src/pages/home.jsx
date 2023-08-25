@@ -10,6 +10,7 @@ import SocketContext from "../context/SocketContext";
 import Call from "../components/Chat/call/Call";
 
 const callData = {
+  socketId: "",
   receiveingCall: false,
   callEnded: false,
 };
@@ -29,6 +30,23 @@ function Home({ socket }) {
 
   //typing
   const [typing, setTyping] = useState(false);
+
+  //call
+  useEffect(() => {
+    setupMedia();
+    socket.on("setup socket", (id) => {
+      setCall({ ...call, socketId: id });
+    });
+  }, []);
+
+  const setupMedia = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        //   userVideo.current.srcObject = stream;
+      });
+  };
 
   //join user into the socket io
   useEffect(() => {
