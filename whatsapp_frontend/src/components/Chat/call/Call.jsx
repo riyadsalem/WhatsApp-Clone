@@ -9,10 +9,11 @@ export default function Call({
   stream,
   userVideo,
   answerCall,
+  show,
 }) {
   const { receiveingCall, name, callEnded } = call;
   const [showActions, setShowActions] = useState(false);
-
+  const [toggle, setToggle] = useState(false);
   return (
     <>
       <div
@@ -42,7 +43,8 @@ export default function Call({
                   playsInline
                   muted
                   autoPlay
-                  className={"largeVideoCall"}
+                  className={toggle ? "SmallVideoCall" : "largeVideoCall"}
+                  onClick={() => setToggle((prev) => !prev)}
                 ></video>
               </div>
             ) : null}
@@ -55,9 +57,10 @@ export default function Call({
                   playsInline
                   muted
                   autoPlay
-                  className={`SmallVideoCall ${
+                  className={`${toggle ? "largeVideoCall" : "SmallVideoCall"} ${
                     showActions ? "moveVideoCall" : ""
                   }`}
+                  onClick={() => setToggle((prev) => !prev)}
                 ></video>
               </div>
             ) : null}
@@ -68,6 +71,11 @@ export default function Call({
       {receiveingCall && !callAccepted && (
         <Ringing call={call} setCall={setCall} answerCall={answerCall} />
       )}
+
+      {/*calling ringtone*/}
+      {!callAccepted && show ? (
+        <audio src="../../../../audio/ringing.mp3" autoPlay loop></audio>
+      ) : null}
     </>
   );
 }

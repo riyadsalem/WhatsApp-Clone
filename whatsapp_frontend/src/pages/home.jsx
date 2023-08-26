@@ -33,6 +33,7 @@ function Home({ socket }) {
   const [call, setCall] = useState(callData);
   const [callAccepted, setCallAccepted] = useState(false);
   const [stream, setStream] = useState();
+  const [show, setShow] = useState(false);
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -128,6 +129,7 @@ function Home({ socket }) {
 
   const enableMedia = () => {
     myVideo.current.srcObject = stream;
+    setShow(true);
   };
 
   //join user into the socket io
@@ -185,6 +187,7 @@ function Home({ socket }) {
         userVideo={userVideo}
         stream={stream}
         answerCall={answerCall}
+        show={show}
       />
     </>
   );
