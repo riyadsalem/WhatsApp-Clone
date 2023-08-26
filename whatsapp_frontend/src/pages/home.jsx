@@ -21,6 +21,7 @@ const callData = {
   callEnded: false,
   name: "",
   picture: "",
+  signal: "",
 };
 
 function Home({ socket }) {
@@ -33,8 +34,9 @@ function Home({ socket }) {
   const [call, setCall] = useState(callData);
   const [stream, setStream] = useState();
   const [show, setShow] = useState(false);
-  const { receiveingCall, callEnded, socketId } = call;
+  const { socketId } = call;
   const [callAccepted, setCallAccepted] = useState(false);
+  const [totalSecInCall, setTotalSecInCall] = useState(0);
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -42,12 +44,23 @@ function Home({ socket }) {
   //typing
   const [typing, setTyping] = useState(false);
 
+  //join user into the socket io
+  useEffect(() => {
+    socket.emit("join", user._id);
+
+    //get online users
+    socket.on("get-online-users", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [user]);
+
   //call
   useEffect(() => {
     setupMedia();
     socket.on("setup socket", (id) => {
       setCall({ ...call, socketId: id });
     });
+
     socket.on("call user", (data) => {
       setCall({
         ...call,
@@ -77,13 +90,11 @@ function Home({ socket }) {
       name: getConversationName(user, activeConversation.users),
       picture: getConversationPicture(user, activeConversation.users),
     });
-
     const peer = new Peer({
       initiator: true,
       trickle: false,
       stream: stream,
     });
-
     peer.on("signal", (data) => {
       socket.emit("call user", {
         userToCall: getConversationId(user, activeConversation.users),
@@ -93,16 +104,13 @@ function Home({ socket }) {
         picture: user.picture,
       });
     });
-
     peer.on("stream", (stream) => {
       userVideo.current.srcObject = stream;
     });
-
     socket.on("call accepted", (signal) => {
       setCallAccepted(true);
       peer.signal(signal);
     });
-
     connectionRef.current = peer;
   };
 
@@ -110,21 +118,17 @@ function Home({ socket }) {
   const answerCall = () => {
     enableMedia();
     setCallAccepted(true);
-
     const peer = new Peer({
       initiator: false,
       trickle: false,
       stream: stream,
     });
-
     peer.on("signal", (data) => {
       socket.emit("answer call", { signal: data, to: call.socketId });
     });
-
     peer.on("stream", (stream) => {
       userVideo.current.srcObject = stream;
     });
-
     peer.signal(call.signal);
     connectionRef.current = peer;
   };
@@ -150,16 +154,6 @@ function Home({ socket }) {
     myVideo.current.srcObject = stream;
     setShow(true);
   };
-
-  //join user into the socket io
-  useEffect(() => {
-    socket.emit("join", user._id);
-
-    //get online users
-    socket.on("get-online-users", (users) => {
-      setOnlineUsers(users);
-    });
-  }, [user]);
 
   //get Conversations
   useEffect(() => {
@@ -198,17 +192,21 @@ function Home({ socket }) {
       </div>
 
       {/* Call */}
-      <Call
-        call={call}
-        setCall={setCall}
-        callAccepted={callAccepted}
-        myVideo={myVideo}
-        userVideo={userVideo}
-        stream={stream}
-        answerCall={answerCall}
-        show={show}
-        endCall={endCall}
-      />
+      <div className={(show || call.signal) && !call.callEnded ? "" : "hidden"}>
+        <Call
+          call={call}
+          setCall={setCall}
+          callAccepted={callAccepted}
+          myVideo={myVideo}
+          userVideo={userVideo}
+          stream={stream}
+          answerCall={answerCall}
+          show={show}
+          endCall={endCall}
+          totalSecInCall={totalSecInCall}
+          setTotalSecInCall={setTotalSecInCall}
+        />
+      </div>
     </>
   );
 }

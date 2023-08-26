@@ -11,6 +11,8 @@ export default function Call({
   answerCall,
   show,
   endCall,
+  totalSecInCall,
+  setTotalSecInCall,
 }) {
   const { receiveingCall, name, callEnded } = call;
   const [showActions, setShowActions] = useState(false);
@@ -18,25 +20,30 @@ export default function Call({
   return (
     <>
       <div
-        className={`fixed top-1/2 left-1/2 -translate-1/2 -translate-y-1/2 w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg ${
-          receiveingCall && !callAccepted ? "hidden" : ""
-        }`}
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[550px] z-10 rounded-2xl overflow-hidden callbg
+        ${receiveingCall && !callAccepted ? "hidden" : ""}
+        `}
         onMouseOver={() => setShowActions(true)}
         onMouseOut={() => setShowActions(false)}
       >
-        {/* Container */}
+        {/*Container*/}
         <div>
           <div>
-            {/* Header */}
+            {/*Header*/}
             <Header />
-            {/* Call area */}
-            <CallArea name={name} />
-            {/* Call actions */}
+            {/*Call area*/}
+            <CallArea
+              name={name}
+              totalSecInCall={totalSecInCall}
+              setTotalSecInCall={setTotalSecInCall}
+              callAccepted={callAccepted}
+            />
+            {/*Call actions*/}
             {showActions ? <CallAcions endCall={endCall} /> : null}
           </div>
-          {/* Video Streams */}
+          {/*Video streams*/}
           <div>
-            {/* User Video */}
+            {/*user video*/}
             {callAccepted && !callEnded ? (
               <div>
                 <video
@@ -49,8 +56,7 @@ export default function Call({
                 ></video>
               </div>
             ) : null}
-
-            {/* My Video */}
+            {/*my video*/}
             {stream ? (
               <div>
                 <video
@@ -69,15 +75,15 @@ export default function Call({
         </div>
       </div>
 
-      {receiveingCall && !callAccepted && (
+      {/*Ringing*/}
+      {receiveingCall && !callAccepted ? (
         <Ringing
           call={call}
           setCall={setCall}
           answerCall={answerCall}
           endCall={endCall}
         />
-      )}
-
+      ) : null}
       {/*calling ringtone*/}
       {!callAccepted && show ? (
         <audio src="../../../../audio/ringing.mp3" autoPlay loop></audio>
