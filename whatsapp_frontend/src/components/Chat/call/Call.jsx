@@ -10,6 +10,7 @@ export default function Call({
   userVideo,
   answerCall,
   show,
+  endCall,
 }) {
   const { receiveingCall, name, callEnded } = call;
   const [showActions, setShowActions] = useState(false);
@@ -31,7 +32,7 @@ export default function Call({
             {/* Call area */}
             <CallArea name={name} />
             {/* Call actions */}
-            {showActions ? <CallAcions /> : null}
+            {showActions ? <CallAcions endCall={endCall} /> : null}
           </div>
           {/* Video Streams */}
           <div>
@@ -69,7 +70,12 @@ export default function Call({
       </div>
 
       {receiveingCall && !callAccepted && (
-        <Ringing call={call} setCall={setCall} answerCall={answerCall} />
+        <Ringing
+          call={call}
+          setCall={setCall}
+          answerCall={answerCall}
+          endCall={endCall}
+        />
       )}
 
       {/*calling ringtone*/}

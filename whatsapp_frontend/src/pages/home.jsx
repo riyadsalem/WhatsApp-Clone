@@ -31,13 +31,13 @@ function Home({ socket }) {
 
   //call
   const [call, setCall] = useState(callData);
-  const [callAccepted, setCallAccepted] = useState(false);
   const [stream, setStream] = useState();
   const [show, setShow] = useState(false);
+  const { receiveingCall, callEnded, socketId } = call;
+  const [callAccepted, setCallAccepted] = useState(false);
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
-  const { socketId } = call;
 
   //typing
   const [typing, setTyping] = useState(false);
@@ -57,6 +57,15 @@ function Home({ socket }) {
         signal: data.signal,
         receiveingCall: true,
       });
+    });
+
+    socket.on("end call", () => {
+      setShow(false);
+      setCall({ ...call, callEnded: true, receiveingCall: false });
+      myVideo.current.srcObject = null;
+      if (callAccepted) {
+        connectionRef?.current?.destroy();
+      }
     });
   }, []);
 
@@ -96,6 +105,7 @@ function Home({ socket }) {
 
     connectionRef.current = peer;
   };
+
   //--answer call  funcion
   const answerCall = () => {
     enableMedia();
@@ -117,6 +127,15 @@ function Home({ socket }) {
 
     peer.signal(call.signal);
     connectionRef.current = peer;
+  };
+
+  //--end call  funcion
+  const endCall = () => {
+    setShow(false);
+    setCall({ ...call, callEnded: true, receiveingCall: false });
+    myVideo.current.srcObject = null;
+    socket.emit("end call", call.socketId);
+    connectionRef?.current?.destroy();
   };
 
   const setupMedia = () => {
@@ -188,6 +207,7 @@ function Home({ socket }) {
         stream={stream}
         answerCall={answerCall}
         show={show}
+        endCall={endCall}
       />
     </>
   );
