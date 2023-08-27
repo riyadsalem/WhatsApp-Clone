@@ -6,7 +6,6 @@ import {
   populateConversation,
   getUserConversations,
 } from "../services/conversation.service.js";
-import UserModel from "../models/userModel.js";
 
 export const create_open_conversation = async (req, res, next) => {
   try {
@@ -51,6 +50,14 @@ export const create_open_conversation = async (req, res, next) => {
         res.status(200).json(populatedConvo);
       }
     } else {
+      //it's a group chat
+      //check if group chat exists
+      const existed_group_conversation = await doesConversationExist(
+        "",
+        "",
+        isGroup
+      );
+      res.status(200).json(existed_group_conversation);
     }
   } catch (error) {
     next(error);

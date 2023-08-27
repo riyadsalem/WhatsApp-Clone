@@ -24,7 +24,11 @@ export default function ChatHeader({ online, callUser }) {
           {/*Conversation image*/}
           <button className="btn">
             <img
-              src={getConversationPicture(user, activeConversation.users)}
+              src={
+                activeConversation.isGroup
+                  ? activeConversation.picture
+                  : getConversationPicture(user, activeConversation.users)
+              }
               alt=""
               className="w-full h-full rounded-full object-cover"
             />
@@ -32,11 +36,13 @@ export default function ChatHeader({ online, callUser }) {
           {/*Conversation name and online status*/}
           <div className="flex flex-col">
             <h1 className="dark:text-white text-md font-bold">
-              {capitalize(
-                getConversationName(user, activeConversation.users).split(
-                  " "
-                )[0]
-              )}
+              {activeConversation.isGroup
+                ? activeConversation.name
+                : capitalize(
+                    getConversationName(user, activeConversation.users).split(
+                      " "
+                    )[0]
+                  )}
             </h1>
             <span className="text-xs dark:text-dark_svg_2">
               {online ? "online" : ""}
@@ -45,14 +51,14 @@ export default function ChatHeader({ online, callUser }) {
         </div>
         {/*Right*/}
         <ul className="flex items-center gap-x-2.5">
-          {online ? (
+          {1 == 1 ? (
             <li onClick={() => callUser()}>
               <button className="btn">
                 <VideoCallIcon />
               </button>
             </li>
           ) : null}
-          {online ? (
+          {1 == 1 ? (
             <li>
               <button className="btn">
                 <CallIcon />
