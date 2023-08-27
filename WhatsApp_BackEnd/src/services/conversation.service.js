@@ -28,6 +28,21 @@ export const doesConversationExist = async (
 
     return convos[0];
   } else {
+    //it's a group chat
+    let convo = await ConversationModel.findById(isGroup)
+      .populate("users admin", "-password")
+      .populate("latestMessage");
+
+    if (!convo)
+      throw createHttpError.BadRequest("Oops...Something went wrong !");
+
+    //populate message model
+    convo = await UserModel.populate(convo, {
+      path: "latestMessage.sender",
+      select: "name email picture status",
+    });
+
+    return convo;
   }
 };
 

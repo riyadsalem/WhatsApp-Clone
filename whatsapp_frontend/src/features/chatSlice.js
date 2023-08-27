@@ -94,6 +94,27 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
+export const createGroupConversation = createAsyncThunk(
+  "conervsation/create_group",
+  async (values, { rejectWithValue }) => {
+    const { token, name, users } = values;
+    try {
+      const { data } = await axios.post(
+        `${CONVERSATION_ENDPOINT}/group`,
+        { name, users },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
+  }
+);
+
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
@@ -191,6 +212,17 @@ export const chatSlice = createSlice({
         state.files = [];
       })
       .addCase(sendMessage.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(createGroupConversation.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(createGroupConversation.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.conversations = [action.payload, ...state.conversations];
+      })
+      .addCase(createGroupConversation.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
