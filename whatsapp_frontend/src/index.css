@@ -164,6 +164,10 @@
 }
 
 /* React select */
+.css-166bipr-Input {
+  color: white !important;
+}
+
 .css-obio5r-control:hover {
   border-color: transparent !important;
 }
@@ -200,6 +204,15 @@
 .css-qbdosj-Input input {
   color: #fff !important;
 }
+
+/*
+#react-select-1-input,
+#react-select-2-input,
+#react-select-3-input {
+  color: #fff !important;
+}
+*/
+
 .css-1nmdiq5-menu {
   background: transparent !important;
   color: #fff !important;

@@ -1,7 +1,6 @@
 import Select from "react-select";
 
 export default function MultipleSelect({
-  selectedUsers,
   setSelectedUsers,
   searchResults,
   handleSearch,

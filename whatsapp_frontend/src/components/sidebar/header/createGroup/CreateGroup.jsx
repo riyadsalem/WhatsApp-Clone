@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { ReturnIcon } from "../../../../svg";
+import { ReturnIcon, ValidIcon } from "../../../../svg";
 import { MultipleSelect, UnderlineInput } from "./";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function CreateGroup({ setShowCreateGroup }) {
   const { user } = useSelector((state) => state.user);
   const { status } = useSelector((state) => state.chat);
+
   const [name, setName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -64,6 +66,16 @@ export default function CreateGroup({ setShowCreateGroup }) {
           setSelectedUsers={setSelectedUsers}
           handleSearch={handleSearch}
         />
+        {/*Create group button*/}
+        <div className="absolute bottom-1/3 left-1/2 -translate-x-[100%]">
+          <button className="btn bg-green_1 scale-150 hover:bg-green-500">
+            {status === "loading" ? (
+              <ClipLoader color="#E9EDEF" size={25} />
+            ) : (
+              <ValidIcon className="fill-white mt-2 h-full" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
