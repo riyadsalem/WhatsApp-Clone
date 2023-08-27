@@ -2,10 +2,13 @@ import { useState } from "react";
 import { ReturnIcon, ValidIcon } from "../../../../svg";
 import { MultipleSelect, UnderlineInput } from "./";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
+import { createGroupConversation } from "../../../../features/chatSlice";
 
 export default function CreateGroup({ setShowCreateGroup }) {
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.user);
   const { status } = useSelector((state) => state.chat);
 
@@ -47,7 +50,21 @@ export default function CreateGroup({ setShowCreateGroup }) {
     }
   };
 
-  const createGroupHandler = async () => {};
+  const createGroupHandler = async () => {
+    if (status !== "loading") {
+      let users = [];
+      selectedUsers.forEach((user) => {
+        users.push(user.value);
+      });
+      let values = {
+        name,
+        users,
+        token: user.token,
+      };
+      await dispatch(createGroupConversation(values));
+      setShowCreateGroup(false);
+    }
+  };
 
   return (
     <div className="createGroupAnimation relative flex0030 h-full z-40">
