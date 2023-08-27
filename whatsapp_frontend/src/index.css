@@ -163,6 +163,15 @@
   flex-direction: column-reverse;
 }
 
+.openToolsAnimation {
+  animation: openTools 0.2s forwards;
+}
+@keyframes openTools {
+  0% {
+    transform: translateY(100%);
+  }
+}
+
 /* React select */
 .css-166bipr-Input {
   color: white !important;
@@ -249,5 +258,21 @@
   }
   100% {
     width: 100%;
+  }
+}
+
+.numberOfUsers {
+  animation: nou 3s infinite;
+}
+
+@keyframes nou {
+  0% {
+    transform: translateX(15%);
+  }
+  50% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(15%);
   }
 }

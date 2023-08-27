@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import {
   CallIcon,
+  CommunityIcon,
   DotsIcon,
   SearchLargeIcon,
   VideoCallIcon,
@@ -51,20 +52,31 @@ export default function ChatHeader({ online, callUser }) {
         </div>
         {/*Right*/}
         <ul className="flex items-center gap-x-2.5">
-          {1 == 1 ? (
+          {online || activeConversation.isGroup ? (
             <li onClick={() => callUser()}>
               <button className="btn">
                 <VideoCallIcon />
               </button>
             </li>
           ) : null}
-          {1 == 1 ? (
+          {online || activeConversation.isGroup ? (
             <li>
               <button className="btn">
                 <CallIcon />
               </button>
             </li>
           ) : null}
+          {activeConversation.users.length > 2 && (
+            <li>
+              <button className="btn relative ">
+                <CommunityIcon className="dark:fill-dark_svg_1" />
+                <div className="numberOfUsers absolute -top-[5px] -left-[6px] w-5 h-5 text-sm bg-[#aebac1] p-2 text-[#025144] rounded-full flex items-center justify-center border-[#025144] border-[3.5px] shadow-xl shadow-[#025144]">
+                  {activeConversation.users.length}
+                </div>
+              </button>
+            </li>
+          )}
+
           <li>
             <button className="btn">
               <SearchLargeIcon className="dark:fill-dark_svg_1" />
