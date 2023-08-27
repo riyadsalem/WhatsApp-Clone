@@ -47,6 +47,8 @@ export default function CreateGroup({ setShowCreateGroup }) {
     }
   };
 
+  const createGroupHandler = async () => {};
+
   return (
     <div className="createGroupAnimation relative flex0030 h-full z-40">
       {/* Container */}
@@ -68,7 +70,10 @@ export default function CreateGroup({ setShowCreateGroup }) {
         />
         {/*Create group button*/}
         <div className="absolute bottom-1/3 left-1/2 -translate-x-[100%]">
-          <button className="btn bg-green_1 scale-150 hover:bg-green-500">
+          <button
+            className="btn bg-green_1 scale-150 hover:bg-green-500"
+            onClick={() => createGroupHandler()}
+          >
             {status === "loading" ? (
               <ClipLoader color="#E9EDEF" size={25} />
             ) : (
